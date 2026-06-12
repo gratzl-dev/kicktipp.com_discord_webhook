@@ -22,6 +22,8 @@ This project implements a Kicktipp API that fetches leaderboard data and sends u
 
 This project was specifically developed for the **UEFA Euro 2024**. Future updates are not planned.
 
+Update **2026**: The project has been updated to work for the **UEFA World Cup 2026** and some improvements and changes have been made.
+
 ## Webhook Message Example
 ![image](https://github.com/user-attachments/assets/e6ff28a0-ccb2-454a-9b71-8e2487fb5957)
 
@@ -66,8 +68,8 @@ Start the application:
 
 
 ## Missing features:
- - [ ] Real time score tracking
- - [ ] Support for other kicktipp languages, currently only `.com` is supported
+ - [ ] Webhook message when game is over with results
+ - [ ] Webhook message when game is over with leaderboard standings
 
 ## Project Structure
 
