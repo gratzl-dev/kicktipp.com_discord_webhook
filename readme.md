@@ -48,16 +48,9 @@ KICKTIPP_BASEURL=https://www.kicktipp.com/your-game
 KICKTIPP_USERNAME=your_username 
 KICKTIPP_PASSWORD=your_password 
 WEBHOOK_URL=your_discord_webhook_url
+USER_ID_MAP={"user": "discord_id"} # Maps kicktipp user to Discord ID (or use this structure for flexible mapping)
 ```
 
-Create a `userIdMap.json` in the src/ folder for personalized Discord Pings. Just add an empty Json Object `{}`  if you wish to display the kicktipp_username instead
-
-```json
-{
-    "kicktipp_username": "<@discord_id>",
-    ...
-}
-```
 
 ## Usage
 

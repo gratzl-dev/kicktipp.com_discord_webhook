@@ -1,5 +1,5 @@
 import { Kicktipp } from "../api/kicktipp.js";
-import userIdMap from "./userIdMap.json" with { type: "json" };
+import { getDiscordId } from "./discord_user_ids.js";
 
 export class Webhook {
   static timeouts = [];
@@ -78,8 +78,4 @@ export class Webhook {
   static clearTimeouts() {
     Webhook.timeouts.forEach((timeout) => clearTimeout(timeout));
   }
-}
-
-function getDiscordId(user) {
-  return userIdMap[user] || user;
 }
