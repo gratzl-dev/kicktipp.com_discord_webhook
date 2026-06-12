@@ -20,28 +20,29 @@ export class Kicktipp {
   static async login(username, password) {
     if (Kicktipp.isLoggedIn()) return;
     try {
-      const response = await fetchCookie(this.baseUrl + "/profil/loginaction", {
-        method: "POST",
-        headers: {
-          "User-Agent": "Mozilla/5.0",
-          Accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-          "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
-          "Accept-Encoding": "gzip, deflate, br, zstd",
+      const response = await fetchCookie("https://www.kicktipp.com/wm-2026-remote-saufen/profil/loginaction", {
+        "credentials": "include",
+        "headers": {
+          "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:151.0) Gecko/20100101 Firefox/151.0",
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "en-US,en;q=0.9",
           "Content-Type": "application/x-www-form-urlencoded",
-          Origin: "https://www.kicktipp.com",
-          Connection: "keep-alive",
-          Referer: this.baseUrl + "/profile/login",
-          // Include other necessary headers here
+          "Upgrade-Insecure-Requests": "1",
+          "Sec-Fetch-Dest": "document",
+          "Sec-Fetch-Mode": "navigate",
+          "Sec-Fetch-Site": "same-origin",
+          "Sec-Fetch-User": "?1",
+          "Priority": "u=0, i"
         },
+        "referrer": `${this.baseUrl}/profile/login`,
         body: new URLSearchParams({
           kennung: username,
           passwort: password,
-          _charset_: "UTF-8",
-          submitbutton: "Log in",
+          submitbutton: "",
         }),
+        "method": "POST",
+        "mode": "cors"
       });
-      console.log();
       if (!response.headers.get("set-cookie").includes("login="))
         throw new Error(`Login not successful.`);
 

@@ -1,5 +1,5 @@
 import { Kicktipp } from "../api/kicktipp.js";
-import userIdMap from "./userIdMap.json" assert { type: "json" };
+import userIdMap from "./userIdMap.json" with { type: "json" };
 
 export class Webhook {
   static timeouts = [];

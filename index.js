@@ -10,6 +10,8 @@ await Kicktipp.init({
 
 if (process.argv[2] === "test") {
   const testIndex = parseInt(process.argv[3]);
+  const leaderboard = await Kicktipp.leaderboard();
+  console.log(leaderboard);
   if (!isNaN(testIndex)) {
     Webhook.triggerManually(testIndex);
   }
