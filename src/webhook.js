@@ -19,6 +19,7 @@ export class Webhook {
     console.log("listening for " + today.length + " games");
     today.forEach((game) => {
       const timeLeft = game.date - now + 10_000; // wait 10 seconds before refreshing
+      console.log(`${game.home} vs ${game.away} starts at ${new Date(game.date)} (${Math.floor(timeLeft / 1000 / 3600)}:${String(Math.floor((timeLeft / 1000 % 3600) / 60)).padStart(2, '0')}:${String(Math.floor(timeLeft / 1000 % 60)).padStart(2, '0')} left)`);
 
       const timeout = setTimeout(async () => {
         const updatedLeaderboard = await Kicktipp.leaderboard();
