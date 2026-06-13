@@ -1,21 +1,24 @@
 {
-  "name": "em2024",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "node index.js test 0"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@types/node-fetch": "^2.6.11",
-    "date-fns": "^4.4.0",
-    "dotenv": "^16.4.5",
-    "fetch-cookie": "^3.0.1",
-    "node-html-parser": "^6.1.13",
-    "tough-cookie": "^4.1.4"
-  },
-  "type": "module"
+	"name": "em2024",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"test": "node index.js test 0"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@types/node-fetch": "^2.6.11",
+		"date-fns": "^4.4.0",
+		"dotenv": "^16.4.5",
+		"fetch-cookie": "^3.0.1",
+		"node-html-parser": "^6.1.13",
+		"tough-cookie": "^4.1.4"
+	},
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "2.5.0"
+	}
 }
