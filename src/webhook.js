@@ -1,14 +1,13 @@
 import { Kicktipp } from "../api/kicktipp.js";
-import { getDiscordId } from "./discord_user_ids.js";
-import * as Webhook from "./webhook.js";
+import { generateWebhookMessageFromGame } from "./discord/embeds.js";
 
 const timeouts = [];
 
 export async function triggerManually(index) {
 	const leaderboard = await Kicktipp.leaderboard();
-	const webhookMsg = Webhook.generateWebhookMessageFromGame(leaderboard[index]);
+	const webhookMsg = generateWebhookMessageFromGame(leaderboard[index]);
 	console.log(webhookMsg);
-	await Webhook.sendWebhookMessage(webhookMsg);
+	await sendWebhookMessage(webhookMsg);
 }
 
 export async function subscribeToLeaderboard() {
@@ -29,38 +28,12 @@ export async function subscribeToLeaderboard() {
 
 			console.log(JSON.stringify(updatedGame));
 
-			const webhookMsg = Webhook.generateWebhookMessageFromGame(updatedGame);
-			await Webhook.sendWebhookMessage(webhookMsg);
+			const webhookMsg = generateWebhookMessageFromGame(updatedGame);
+			await sendWebhookMessage(webhookMsg);
 		}, timeLeft);
 
 		timeouts.push(timeout);
 	});
-}
-
-export function generateWebhookMessageFromGame(updatedGame) {
-	const webhookMsg = {
-		content: `⚽ **${updatedGame.home}** - **${updatedGame.away}** Predictions ⚽`,
-		embeds: [
-			{
-				description: `[Leaderboard](${process.env.KICKTIPP_BASEURL}/leaderboard) | [Prediction Center](${process.env.KICKTIPP_BASEURL}/leaderboard)`,
-				fields: [],
-				title: "🔗",
-			},
-		],
-	};
-	const embed = {
-		title: "Home - Away (●'◡'●)",
-		description: "",
-		color: "14177041",
-	};
-	updatedGame.bets.forEach((bet) => {
-		if (bet.bet) {
-			embed.description += `\`${bet.bet.home.toString()}   -   ${bet.bet.away.toString()}\`  ${getDiscordId(bet.user)} \n`;
-		}
-	});
-	webhookMsg.embeds.unshift(embed);
-	console.log(JSON.stringify(embed));
-	return webhookMsg;
 }
 
 export async function sendWebhookMessage(message) {

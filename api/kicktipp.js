@@ -138,7 +138,7 @@ export const Kicktipp = {
 
 	throwIfNotLoggedIn() {
 		if (!Kicktipp.isLoggedIn()) throw new Error("Not logged in.");
-	}
+	},
 };
 
 function extractValues(bet) {
