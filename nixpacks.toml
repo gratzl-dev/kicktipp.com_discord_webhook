@@ -5,4 +5,4 @@ nixPkgs = ['nodejs']
 cmds = [ "npm ci"]
 
 [start]
-cmd = 'node index.js'
+cmd = 'npm start'

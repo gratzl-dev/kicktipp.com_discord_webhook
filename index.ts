@@ -32,6 +32,6 @@ if (process.argv[2] === "test") {
 			clearTimeouts();
 			void subscribeToLeaderboard();
 			refreshSubscriptionsTomorrowMorning();
-		}, morning - now);
+		}, morning.getTime() - now.getTime());
 	}
 }

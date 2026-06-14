@@ -58,7 +58,7 @@ USER_ID_MAP={"user": "discord_id"} # Maps kicktipp user to Discord ID (or use th
 
 Start the application:
 
-`node index.js`
+`npm start`
 
 
 ### What does the application do
@@ -73,7 +73,7 @@ Start the application:
 
 ## Project Structure
 
-- `index.js`: Main entry point of the application. Initializes the Kicktipp API and sets up daily refreshes.
+- `index.ts`: Main entry point of the application. Initializes the Kicktipp API and sets up daily refreshes.
 - `src/webhook.js`: Contains the `Webhook` class responsible for subscribing to the leaderboard, generating webhook messages, and sending them.
 - `api/kicktipp.js`: Contains the `Kicktipp` class responsible for scraping and parsing kicktipp.com, currently implemented and working are login and fetching leaderboard data.
 - `src/userIdMap.json`: Maps user IDs to Discord IDs for personalized messages.
@@ -84,7 +84,7 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ## Testing
 
-For testing if the _Configuration_ was successful, you can start the application with `node index.js test <index>`, index being which game of the current leaderboard to select. 
+For testing if the _Configuration_ was successful, you can start the application with `npm run test -- <index>`, index being which game of the current leaderboard to select. 
 It will start the application normally, but will also immediately try to send a webhook to discord with the selected game info.
 
 ## License

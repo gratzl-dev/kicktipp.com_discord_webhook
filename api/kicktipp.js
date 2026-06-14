@@ -48,8 +48,9 @@ export const Kicktipp = {
 					mode: "cors",
 				},
 			);
-			if (!response.headers.get("set-cookie").includes("login="))
-				throw new Error(`Login not successful.`);
+			if (!response.headers.get("set-cookie").includes("login=")) {
+				throw new Error(`set-cookie header missing from response.`);
+			}
 
 			console.log("Login successful:", response.status);
 			// Cookies are now managed by fetch-cookie and stored in the CookieJar

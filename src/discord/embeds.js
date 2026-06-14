@@ -25,3 +25,16 @@ export function generateWebhookMessageFromGame(updatedGame) {
 	console.log(JSON.stringify(embed));
 	return webhookMsg;
 }
+
+// TODO
+export function generateGameResultWebhookMessage(resultData) {
+	return {
+		content: `🥅 **${resultData.home}** - **${resultData.away}** Game Result are in! 🏆`,
+		embeds: [
+			{
+				title: `\`${resultData.result.home} - ${resultData.result.away}\``,
+				// color: home = green, away = red
+			},
+		],
+	};
+}
