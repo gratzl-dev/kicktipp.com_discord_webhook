@@ -2,7 +2,6 @@
 	"name": "kicktipp-discord-webhook",
 	"version": "2.0.0",
 	"description": "Discord webhook integration for Kicktipp game predictions",
-	"type": "module",
 	"main": "dist/index.js",
 	"scripts": {
 		"dev": "tsx index.ts",

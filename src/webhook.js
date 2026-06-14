@@ -1,4 +1,4 @@
-import { Kicktipp } from "../api/kicktipp.js";
+import { Kicktipp } from "../api/kicktipp";
 import { generateWebhookMessageFromGame } from "./discord/embeds.js";
 
 const timeouts = [];
