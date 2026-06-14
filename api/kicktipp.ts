@@ -1,10 +1,10 @@
 import makeFetchCookie from "fetch-cookie";
-import {type HTMLElement, parse} from "node-html-parser";
+import { type HTMLElement, parse } from "node-html-parser";
 import * as tough from "tough-cookie";
-import type {KicktippConfig} from "./model/KicktippConfig";
-import type {LeaderboardMatch} from "./model/LeaderboardMatch";
-import {ScheduleMatch} from "./model/ScheduleMatch";
-import {Score} from "./model/Score";
+import type { KicktippConfig } from "./model/KicktippConfig";
+import type { LeaderboardMatch } from "./model/LeaderboardMatch";
+import type { ScheduleMatch } from "./model/ScheduleMatch";
+import type { Score } from "./model/Score";
 
 const cookieJar = new tough.CookieJar();
 const fetchCookie = makeFetchCookie(fetch, cookieJar);
@@ -81,12 +81,15 @@ export const Kicktipp = {
 		}
 	},
 
-	async leaderboard(): Promise<LeaderboardMatch[]> {
+	async leaderboard(page = 0): Promise<LeaderboardMatch[]> {
 		Kicktipp.throwIfNotLoggedIn();
 
-		const response = await fetchCookie(`${Kicktipp.baseUrl}/leaderboard`, {
-			method: "GET",
-		});
+		const response = await fetchCookie(
+			`${Kicktipp.baseUrl}/leaderboard?spieltagIndex=${page}`,
+			{
+				method: "GET",
+			},
+		);
 
 		const html = parse(await response.text());
 
@@ -114,7 +117,8 @@ export const Kicktipp = {
 		for (let i = 3; i < th.length - 4; i++) {
 			const headerboxes = th[i].querySelectorAll(".headerbox");
 
-            spieleResult[i - 3].shorthand = `${headerboxes[0]?.innerHTML ?? ""} - ${headerboxes[1]?.innerHTML ?? ""}`;
+			spieleResult[i - 3].shorthand =
+				`${headerboxes[0]?.innerHTML ?? ""} - ${headerboxes[1]?.innerHTML ?? ""}`;
 
 			spieleResult[i - 3].live =
 				!!headerboxes[2] &&
@@ -144,7 +148,7 @@ export const Kicktipp = {
 					b.removeChild(sub);
 				}
 
-				spieleResult[i].bets!.push({
+				spieleResult[i].bets.push({
 					user: username,
 					points: sub ? Number(sub.innerText) : 0,
 					bet: extractValues(b.innerText),

@@ -74,7 +74,7 @@ Start the application:
 ## Project Structure
 
 - `index.ts`: Main entry point of the application. Initializes the Kicktipp API and sets up daily refreshes.
-- `src/webhook.js`: Contains the `Webhook` class responsible for subscribing to the leaderboard, generating webhook messages, and sending them.
+- `src/webhook.ts`: Contains the `Webhook` class responsible for subscribing to the leaderboard, generating webhook messages, and sending them.
 - `api/kicktipp.ts`: Contains the `Kicktipp` class responsible for scraping and parsing kicktipp.com, currently implemented and working are login and fetching leaderboard data.
 - `src/userIdMap.json`: Maps user IDs to Discord IDs for personalized messages.
 

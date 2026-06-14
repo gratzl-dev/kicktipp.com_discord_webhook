@@ -27,6 +27,7 @@
 		"@biomejs/biome": "2.5.0",
 		"@types/node": "^25.9.2",
 		"@types/tough-cookie": "^4.0.5",
+		"discord-api-types": "^0.38.48",
 		"tsx": "^4.20.3",
 		"typescript": "^5.9.3"
 	}

@@ -1,4 +1,3 @@
-
 import {
 	clearTimeouts,
 	subscribeToLeaderboard,
@@ -6,16 +5,16 @@ import {
 } from "./src/webhook.js";
 import "dotenv/config";
 import { addDays, setHours } from "date-fns";
-import {Kicktipp} from "./api/kicktipp";
+import { Kicktipp } from "./api/kicktipp";
 
 async function main() {
-	if(!process.env.KICKTIPP_BASEURL) {
+	if (!process.env.KICKTIPP_BASEURL) {
 		throw new Error("KICKTIPP_BASEURL environment variable missing");
 	}
-	if(!process.env.KICKTIPP_USERNAME) {
+	if (!process.env.KICKTIPP_USERNAME) {
 		throw new Error("KICKTIPP_USERNAME environment variable missing");
 	}
-	if(!process.env.KICKTIPP_PASSWORD) {
+	if (!process.env.KICKTIPP_PASSWORD) {
 		throw new Error("KICKTIPP_PASSWORD environment variable missing");
 	}
 
@@ -27,7 +26,7 @@ async function main() {
 
 	if (process.argv[2] === "test") {
 		const testIndex = parseInt(process.argv[3], 10);
-		const leaderboard = await Kicktipp.leaderboard();
+		const leaderboard = await Kicktipp.leaderboard(1);
 		console.log(leaderboard);
 		if (!Number.isNaN(testIndex)) {
 			void triggerManually(testIndex);
