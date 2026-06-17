@@ -26,8 +26,8 @@ async function main() {
 
 	if (process.argv[2] === "test") {
 		const testIndex = parseInt(process.argv[3], 10);
-		const leaderboard = await Kicktipp.leaderboard(1);
-		console.log(leaderboard);
+		const leaderboard = await Kicktipp.leaderboard();
+		console.log(JSON.stringify(leaderboard));
 		if (!Number.isNaN(testIndex)) {
 			void triggerManually(testIndex);
 		}

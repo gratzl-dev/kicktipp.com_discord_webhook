@@ -1,6 +1,9 @@
 import { Kicktipp } from "../api/kicktipp";
 import type { LeaderboardMatch } from "../api/model/LeaderboardMatch";
-import {generateGameResultWebhookMessage, generateWebhookMessageFromGame} from "./discord/embeds";
+import {
+	generateGameResultWebhookMessage,
+	generateWebhookMessageFromGame,
+} from "./discord/embeds";
 
 const timeouts: NodeJS.Timeout[] = [];
 
@@ -8,18 +11,18 @@ export async function triggerManually(index: number): Promise<void> {
 	const leaderboard = await Kicktipp.leaderboard(1);
 	const game = leaderboard[index];
 	await sendWebhookMessage(generateWebhookMessageFromGame(game));
-	if(game.result) {
+	if (game.result) {
 		await sendWebhookMessage(generateGameResultWebhookMessage(game));
 	}
 }
 
 export async function subscribeToLeaderboard(): Promise<void> {
 	let futureGames: LeaderboardMatch[] = [];
-	while(!futureGames?.length) {
+	while (!futureGames?.length) {
 		const now = new Date();
 		const leaderboard = await Kicktipp.leaderboard();
 		futureGames = leaderboard.filter((l) => l.date > now);
-		if(!futureGames.length) {
+		if (!futureGames.length) {
 			console.log("No future games found. Retrying in 60 minutes...");
 			await wait(3_600_000);
 		}
@@ -70,40 +73,45 @@ export function clearTimeouts(): void {
 	timeouts.forEach((timeout) => void clearTimeout(timeout));
 }
 
-
 function scheduleGame(game: LeaderboardMatch) {
 	const kickoff = game.date.getTime();
 	const now = Date.now();
 
-	const kickoffTimeout = setTimeout(async () => {
-		const updatedLeaderboard = await Kicktipp.leaderboard();
-		const updatedGame = updatedLeaderboard[game.index];
+	const kickoffTimeout = setTimeout(
+		async () => {
+			const updatedLeaderboard = await Kicktipp.leaderboard();
+			const updatedGame = updatedLeaderboard[game.index];
 
-		await sendWebhookMessage(generateWebhookMessageFromGame(updatedGame));
+			await sendWebhookMessage(generateWebhookMessageFromGame(updatedGame));
 
-		startPostGamePolling(game);
-
-	}, Math.max(0, kickoff - now + 10_000));
+			startPostGamePolling(game);
+		},
+		Math.max(0, kickoff - now + 10_000),
+	);
 
 	timeouts.push(kickoffTimeout);
 }
 
 function startPostGamePolling(game: LeaderboardMatch) {
-	const postGameTimeout = setTimeout(async function poll() {
-		const leaderboard = await Kicktipp.leaderboard();
-		const updatedGame = leaderboard[game.index];
+	const postGameTimeout = setTimeout(
+		async function poll() {
+			const leaderboard = await Kicktipp.leaderboard();
+			const updatedGame = leaderboard[game.index];
 
-		if (!updatedGame.live) {
-			return await sendWebhookMessage(generateGameResultWebhookMessage(updatedGame));
-		}
+			if (!updatedGame.live) {
+				return await sendWebhookMessage(
+					generateGameResultWebhookMessage(updatedGame),
+				);
+			}
 
-		const t = setTimeout(poll, 60_000);
-		timeouts.push(t);
-	}, 90 * 60 * 1000);
+			const t = setTimeout(poll, 60_000);
+			timeouts.push(t);
+		},
+		90 * 60 * 1000,
+	);
 
 	timeouts.push(postGameTimeout);
 }
-
 
 function wait(ms: number) {
 	return new Promise((resolve) => {

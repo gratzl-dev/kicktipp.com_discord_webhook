@@ -29,7 +29,9 @@ export function generateWebhookMessageFromGame(updatedGame: LeaderboardMatch) {
 	return webhookMsg;
 }
 
-export function generateGameResultWebhookMessage(resultData: LeaderboardMatch): WebhookMessage | undefined {
+export function generateGameResultWebhookMessage(
+	resultData: LeaderboardMatch,
+): WebhookMessage | undefined {
 	if (!resultData.result) return;
 	return {
 		content: `🥅 **${resultData.home}** - **${resultData.away}** Game Result are in! 🏆`,
@@ -40,14 +42,17 @@ export function generateGameResultWebhookMessage(resultData: LeaderboardMatch): 
 			},
 			...(resultData.bets
 				? [
-					{
-						title: `Updated Rankings 📈`,
-						description: resultData.bets
-							.map((bet, i) => `**${i+1}.** ${getDiscordId(bet.user)}\n`)
-							.join(""),
-						color: 16766720
-					},
-				]
+						{
+							title: `Updated Rankings 📈`,
+							description: resultData.bets
+								.map(
+									(bet, i) =>
+										`**${i + 1}.** ${getDiscordId(bet.user)} - *+${bet.points}* : ${bet.totalPoints}\n`,
+								)
+								.join(""),
+							color: 16766720,
+						},
+					]
 				: []),
 		],
 	};

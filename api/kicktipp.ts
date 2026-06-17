@@ -134,6 +134,7 @@ export const Kicktipp = {
 
 			const cols = row.querySelectorAll("td");
 			const username = cols[2]?.innerText ?? "";
+			const points = cols[cols.length - 1]?.innerText ?? "";
 
 			const bets = row.querySelectorAll(".ereignis");
 
@@ -152,6 +153,7 @@ export const Kicktipp = {
 					user: username,
 					points: sub ? Number(sub.innerText) : 0,
 					bet: extractValues(b.innerText),
+					totalPoints: points ? Number(points) : 0,
 				});
 			});
 		});
