@@ -8,7 +8,7 @@ export function generateWebhookMessageFromGame(updatedGame: LeaderboardMatch) {
 		content: `⚽ **${updatedGame.home}** - **${updatedGame.away}** Predictions ⚽`,
 		embeds: [
 			{
-				description: `[Leaderboard](${process.env.KICKTIPP_BASEURL}/leaderboard) | [Prediction Center](${process.env.KICKTIPP_BASEURL}/leaderboard)`,
+				description: `[Leaderboard](${process.env.KICKTIPP_BASEURL}leaderboard) | [Prediction Center](${process.env.KICKTIPP_BASEURL}predict)`,
 				fields: [],
 				title: "🔗",
 			},
