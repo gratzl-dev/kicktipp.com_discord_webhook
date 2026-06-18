@@ -47,7 +47,7 @@ export function generateGameResultWebhookMessage(
 							description: resultData.bets
 								.map(
 									(bet, i) =>
-										`**${i + 1}.** ${getDiscordId(bet.user)} - *+${bet.points}* : ${bet.totalPoints}\n`,
+										`**${i + 1}.** ${getDiscordId(bet.user)} | *+${bet.points}* Total: ${bet.totalPoints}\n`,
 								)
 								.join(""),
 							color: 16766720,
