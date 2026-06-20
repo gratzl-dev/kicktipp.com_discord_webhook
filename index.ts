@@ -37,7 +37,7 @@ async function main() {
 
 		function refreshSubscriptionsTomorrowMorning() {
 			const now = new Date();
-			const morning = setHours(addDays(now, 1), 5);
+			const morning = setHours(addDays(now, 1), Number(process.env.REFRESH_LEADERBOARD_GAMES_HOUR_OF_DAY) ?? 5);
 
 			setTimeout(() => {
 				clearTimeouts();
