@@ -1,8 +1,4 @@
-import {
-	clearTimeouts,
-	subscribeToLeaderboard,
-	triggerManually,
-} from "./src/webhook.js";
+import { subscribeToLeaderboard, triggerManually } from "./src/webhook.js";
 import "dotenv/config";
 import { addDays, setHours } from "date-fns";
 import { Kicktipp } from "./api/kicktipp";
@@ -41,7 +37,6 @@ async function main() {
 			const morning = setHours(addDays(now, 1), !Number.isNaN(hour) ? hour : 5);
 
 			setTimeout(() => {
-				clearTimeouts();
 				void subscribeToLeaderboard();
 				refreshSubscriptionsTomorrowMorning();
 			}, morning.getTime() - now.getTime());

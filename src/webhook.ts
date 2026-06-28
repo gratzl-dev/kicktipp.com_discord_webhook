@@ -5,7 +5,14 @@ import {
 	generateWebhookMessageFromGame,
 } from "./discord/embeds";
 
-const timeouts: NodeJS.Timeout[] = [];
+const games = new Map<
+	string,
+	{
+		kicktipp: LeaderboardMatch;
+		predictionTimeout: NodeJS.Timeout;
+		postGameTimeout?: NodeJS.Timeout;
+	}
+>();
 
 export async function triggerManually(index: number): Promise<void> {
 	const leaderboard = await Kicktipp.leaderboard(1);
@@ -69,48 +76,85 @@ export async function sendWebhookMessage(message: unknown): Promise<void> {
 	}
 }
 
-export function clearTimeouts(): void {
-	timeouts.forEach((timeout) => void clearTimeout(timeout));
+function getGameKey(game: LeaderboardMatch): string {
+	return `${game.index}-${game.home}-${game.away}-${game.date.getTime()}`;
 }
 
 function scheduleGame(game: LeaderboardMatch) {
+	const gameKey = getGameKey(game);
+
+	if (games.has(gameKey)) {
+		return;
+	}
+
 	const kickoff = game.date.getTime();
 	const now = Date.now();
 
 	const kickoffTimeout = setTimeout(
 		async () => {
 			const updatedLeaderboard = await Kicktipp.leaderboard();
-			const updatedGame = updatedLeaderboard[game.index];
+			const updatedGame = updatedLeaderboard.find(
+				(g) => getGameKey(g) === gameKey
+			);
+
+			if (!updatedGame) {
+				console.error(`Game not found: ${game.home} vs ${game.away}`);
+				return;
+			}
 
 			await sendWebhookMessage(generateWebhookMessageFromGame(updatedGame));
 
-			startPostGamePolling(game);
+			const gameData = games.get(gameKey);
+			if (gameData) {
+				clearTimeout(gameData.predictionTimeout);
+			}
+
+			startPostGamePolling(updatedGame);
 		},
 		Math.max(0, kickoff - now + 10_000),
 	);
 
-	timeouts.push(kickoffTimeout);
+	games.set(gameKey, {
+		kicktipp: game,
+		predictionTimeout: kickoffTimeout,
+	});
 }
 
 function startPostGamePolling(game: LeaderboardMatch) {
-	const postGameTimeout = setTimeout(
+	const gameKey = getGameKey(game);
+	const gameData = games.get(gameKey);
+
+	if (!gameData) {
+		return;
+	}
+
+	gameData.postGameTimeout = setTimeout(
 		async function poll() {
 			const leaderboard = await Kicktipp.leaderboard();
-			const updatedGame = leaderboard[game.index];
+			const updatedGame = leaderboard.find(
+				(g) => getGameKey(g) === gameKey
+			);
+
+			if (!updatedGame) {
+				console.error(`Game not found: ${game.home} vs ${game.away}`);
+				games.delete(gameKey);
+				return;
+			}
 
 			if (!updatedGame.live) {
-				return await sendWebhookMessage(
-					generateGameResultWebhookMessage(updatedGame),
-				);
+				await sendWebhookMessage(generateGameResultWebhookMessage(updatedGame));
+				games.delete(gameKey);
+				return;
 			}
 
 			const t = setTimeout(poll, 60_000);
-			timeouts.push(t);
+			const currentGameData = games.get(gameKey);
+			if (currentGameData) {
+				currentGameData.postGameTimeout = t;
+			}
 		},
 		90 * 60 * 1000,
 	);
-
-	timeouts.push(postGameTimeout);
 }
 
 function wait(ms: number) {
