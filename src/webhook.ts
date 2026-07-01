@@ -77,7 +77,7 @@ export async function sendWebhookMessage(message: unknown): Promise<void> {
 }
 
 function getGameKey(game: LeaderboardMatch): string {
-	return `${game.index}-${game.home}-${game.away}-${game.date.getTime()}`;
+	return `${game.home}-${game.away}-${game.date.getTime()}`;
 }
 
 function scheduleGame(game: LeaderboardMatch) {
